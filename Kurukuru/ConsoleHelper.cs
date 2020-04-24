@@ -38,20 +38,24 @@ namespace Kurukuru
             Console.SetCursorPosition(0, Console.CursorTop);
             Console.Write(new string(' ', Console.WindowWidth));
             Console.SetCursorPosition(0, currentLineCursor);
-            Console.Out.Flush();
         }
 
         public static void SetCursorVisibility(bool visible)
         {
-            if (!CanAcceptEscapeSequence) return;
-
-            if (visible)
+            if (CanAcceptEscapeSequence)
             {
-                Console.Write("\u001B[?25h");
+                Console.CursorVisible = visible;
             }
             else
             {
-                Console.Write("\u001B[?25l");
+                if (visible)
+                {
+                    Console.Write("\u001B[?25h");
+                }
+                else
+                {
+                    Console.Write("\u001B[?25l");
+                }
             }
         }
     }
