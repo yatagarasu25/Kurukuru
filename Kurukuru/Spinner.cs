@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Kurukuru
@@ -8,6 +9,15 @@ namespace Kurukuru
         public Spinner(string text, Pattern pattern = null, ConsoleColor? color = null, bool enabled = true, Pattern fallbackPattern = null)
             : base(text, pattern, color, enabled, fallbackPattern)
         {
+        }
+
+        protected override async Task WaitNextFrame(CancellationToken token)
+        {
+            try
+            {
+                await Task.Delay(CurrentPattern.Interval, token);
+            }
+            catch (OperationCanceledException) { }
         }
 
         public static void Start(string text, Action action, Pattern pattern = null, Pattern fallbackPattern = null)

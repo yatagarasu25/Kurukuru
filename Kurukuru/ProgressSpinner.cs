@@ -20,7 +20,11 @@ namespace Kurukuru
 
         protected override async Task WaitNextFrame(CancellationToken token)
         {
-            await ReportSemaphore.WaitAsync(token);
+            try
+            {
+                await ReportSemaphore.WaitAsync(token);
+            }
+            catch (OperationCanceledException) { }
         }
 
         public static void Start(string text, Action action, Pattern pattern = null, Pattern fallbackPattern = null)

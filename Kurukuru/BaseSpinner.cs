@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Kurukuru
 {
-    public class BaseSpinner : IDisposable
+    public abstract class BaseSpinner : IDisposable
     {
         private CancellationTokenSource _cancellationTokenSource;
         private Task _task;
@@ -22,7 +22,7 @@ namespace Kurukuru
         public ConsoleColor? Color { get; set; }
         public string Text { get; set; }
 
-        private static Pattern DefaultPattern
+        protected static Pattern DefaultPattern
         {
             get
             {
@@ -32,7 +32,7 @@ namespace Kurukuru
             }
         }
 
-        private Pattern CurrentPattern
+        protected Pattern CurrentPattern
         {
             get
             {
@@ -74,10 +74,7 @@ namespace Kurukuru
             });
         }
 
-        protected virtual async Task WaitNextFrame(CancellationToken token)
-        {
-            await Task.Delay(CurrentPattern.Interval, token);
-        }
+        protected abstract Task WaitNextFrame(CancellationToken token);
 
         private void Render()
         {
